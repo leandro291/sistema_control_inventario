@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-gray-100 h-screen overflow-hidden">
+
+    <div class="grid grid-cols-[260px_1fr] h-screen">
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="bg-gray-900 text-white flex flex-col">
+
+        <!-- Logo -->
+        <div class="px-6 py-5 border-b border-gray-700">
+          <h1 class="text-xl font-bold tracking-wide text-white">⚡ MyDashboard</h1>
+        </div>
+
+        <!-- Nav links -->
+        <nav class="flex-1 px-4 py-6 space-y-1">
+          <a href="#" onclick="showSection('inicio')" id="nav-inicio"
+            class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium transition">
+            <span>🏠</span> Inicio
+          </a>
+          <a href="#" onclick="showSection('productos')" id="nav-productos"
+            class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition">
+            <span>📦</span> Productos
+          </a>
+          <a href="#" onclick="showSection('proveedores')" id="nav-proveedores"
+            class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition">
+            <span>🏭</span> Proveedores
+          </a>
+          <a href="#" onclick="showSection('movimientos')" id="nav-movimientos"
+            class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition">
+            <span>🔄</span> Movimientos
+          </a>
+        </nav>
+
+        <!-- User footer -->
+        <div class="px-6 py-4 border-t border-gray-700 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">JD</div>
+          <div>
+            <p class="text-sm font-medium text-white">Juan Doe</p>
+            <p class="text-xs text-gray-400">Admin</p>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ── MAIN CONTENT ── -->
+      <main class="flex flex-col overflow-hidden">
+
+        <!-- Top bar -->
+        <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+          <div>
+            <h2 id="page-title" class="text-lg font-semibold text-gray-800">Inicio</h2>
+            <p id="page-subtitle" class="text-sm text-gray-400">Resumen general del sistema</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button class="relative p-2 rounded-lg hover:bg-gray-100 transition">
+              🔔
+              <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            <button id="btn-nuevo" class="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+              + Nuevo
+            </button>
+          </div>
+        </header>
+
+        <!-- Content area -->
+        <div class="flex-1 overflow-y-auto p-8">
+
+          <!-- ===== INICIO ===== -->
+          <section id="section-inicio">
+            <div class="grid grid-cols-4 gap-5 mb-8">
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Total Productos</p>
+                <p class="text-2xl font-bold text-gray-800">340</p>
+                <p class="text-xs text-green-500 mt-1">↑ 8% este mes</p>
+              </div>
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Proveedores</p>
+                <p class="text-2xl font-bold text-gray-800">24</p>
+                <p class="text-xs text-green-500 mt-1">↑ 2 nuevos</p>
+              </div>
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Entradas hoy</p>
+                <p class="text-2xl font-bold text-gray-800">58</p>
+                <p class="text-xs text-green-500 mt-1">↑ 12% vs ayer</p>
+              </div>
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Salidas hoy</p>
+                <p class="text-2xl font-bold text-gray-800">31</p>
+                <p class="text-xs text-red-400 mt-1">↓ 5% vs ayer</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 class="font-semibold text-gray-700 mb-4">Actividad reciente</h3>
+                <ul class="space-y-3">
+                  <li class="flex items-center gap-3 text-sm text-gray-600">
+                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                    Entrada de 50 unidades — Producto A
+                  </li>
+                  <li class="flex items-center gap-3 text-sm text-gray-600">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    Nuevo proveedor registrado — DistMax
+                  </li>
+                  <li class="flex items-center gap-3 text-sm text-gray-600">
+                    <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                    Stock bajo — Producto C (3 unidades)
+                  </li>
+                  <li class="flex items-center gap-3 text-sm text-gray-600">
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                    Salida de 20 unidades — Producto B
+                  </li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 class="font-semibold text-gray-700 mb-4">Productos con stock bajo</h3>
+                <ul class="space-y-3">
+                  <li class="flex justify-between items-center text-sm">
+                    <span class="text-gray-600">Producto C</span>
+                    <span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full">3 uds</span>
+                  </li>
+                  <li class="flex justify-between items-center text-sm">
+                    <span class="text-gray-600">Producto F</span>
+                    <span class="bg-yellow-100 text-yellow-600 text-xs px-2 py-0.5 rounded-full">7 uds</span>
+                  </li>
+                  <li class="flex justify-between items-center text-sm">
+                    <span class="text-gray-600">Producto K</span>
+                    <span class="bg-yellow-100 text-yellow-600 text-xs px-2 py-0.5 rounded-full">9 uds</span>
+                  </li>
+                  <li class="flex justify-between items-center text-sm">
+                    <span class="text-gray-600">Producto M</span>
+                    <span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full">1 ud</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== PRODUCTOS ===== -->
+          <section id="section-productos" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-semibold text-gray-700">Lista de Productos</h3>
+                <input type="text" placeholder="Buscar producto..." class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                  <tr>
+                    <th class="px-6 py-3 text-left">Código</th>
+                    <th class="px-6 py-3 text-left">Nombre</th>
+                    <th class="px-6 py-3 text-left">Categoría</th>
+                    <th class="px-6 py-3 text-left">Stock</th>
+                    <th class="px-6 py-3 text-left">Precio</th>
+                    <th class="px-6 py-3 text-left">Estado</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#P001</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto A</td>
+                    <td class="px-6 py-3 text-gray-600">Electrónica</td>
+                    <td class="px-6 py-3 text-gray-600">120</td>
+                    <td class="px-6 py-3 text-gray-600">$45.00</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Disponible</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#P002</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto B</td>
+                    <td class="px-6 py-3 text-gray-600">Ropa</td>
+                    <td class="px-6 py-3 text-gray-600">85</td>
+                    <td class="px-6 py-3 text-gray-600">$22.00</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Disponible</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#P003</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto C</td>
+                    <td class="px-6 py-3 text-gray-600">Hogar</td>
+                    <td class="px-6 py-3 text-gray-600">3</td>
+                    <td class="px-6 py-3 text-gray-600">$78.00</td>
+                    <td class="px-6 py-3"><span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full">Stock bajo</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#P004</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto D</td>
+                    <td class="px-6 py-3 text-gray-600">Electrónica</td>
+                    <td class="px-6 py-3 text-gray-600">200</td>
+                    <td class="px-6 py-3 text-gray-600">$130.00</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Disponible</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#P005</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto E</td>
+                    <td class="px-6 py-3 text-gray-600">Alimentos</td>
+                    <td class="px-6 py-3 text-gray-600">0</td>
+                    <td class="px-6 py-3 text-gray-600">$12.00</td>
+                    <td class="px-6 py-3"><span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">Agotado</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ===== PROVEEDORES ===== -->
+          <section id="section-proveedores" class="hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-semibold text-gray-700">Lista de Proveedores</h3>
+                <input type="text" placeholder="Buscar proveedor..." class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                  <tr>
+                    <th class="px-6 py-3 text-left">ID</th>
+                    <th class="px-6 py-3 text-left">Empresa</th>
+                    <th class="px-6 py-3 text-left">Contacto</th>
+                    <th class="px-6 py-3 text-left">Teléfono</th>
+                    <th class="px-6 py-3 text-left">Productos</th>
+                    <th class="px-6 py-3 text-left">Estado</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#V001</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">DistMax S.A.</td>
+                    <td class="px-6 py-3 text-gray-600">Carlos Ruiz</td>
+                    <td class="px-6 py-3 text-gray-600">555-1234</td>
+                    <td class="px-6 py-3 text-gray-600">48</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Activo</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#V002</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">GlobalSupply</td>
+                    <td class="px-6 py-3 text-gray-600">Ana Torres</td>
+                    <td class="px-6 py-3 text-gray-600">555-5678</td>
+                    <td class="px-6 py-3 text-gray-600">120</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Activo</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#V003</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">TechParts Co.</td>
+                    <td class="px-6 py-3 text-gray-600">Luis Méndez</td>
+                    <td class="px-6 py-3 text-gray-600">555-9012</td>
+                    <td class="px-6 py-3 text-gray-600">35</td>
+                    <td class="px-6 py-3"><span class="bg-yellow-100 text-yellow-600 text-xs px-2 py-0.5 rounded-full">Pendiente</span></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">#V004</td>
+                    <td class="px-6 py-3 font-medium text-gray-800">FreshGoods</td>
+                    <td class="px-6 py-3 text-gray-600">María López</td>
+                    <td class="px-6 py-3 text-gray-600">555-3456</td>
+                    <td class="px-6 py-3 text-gray-600">22</td>
+                    <td class="px-6 py-3"><span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full">Inactivo</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ===== MOVIMIENTOS ===== -->
+          <section id="section-movimientos" class="hidden">
+            <div class="grid grid-cols-3 gap-5 mb-6">
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Total Entradas</p>
+                <p class="text-2xl font-bold text-green-600">+1,240</p>
+                <p class="text-xs text-gray-400 mt-1">Unidades este mes</p>
+              </div>
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Total Salidas</p>
+                <p class="text-2xl font-bold text-red-500">-870</p>
+                <p class="text-xs text-gray-400 mt-1">Unidades este mes</p>
+              </div>
+              <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 mb-1">Balance</p>
+                <p class="text-2xl font-bold text-blue-600">+370</p>
+                <p class="text-xs text-gray-400 mt-1">Unidades netas</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-semibold text-gray-700">Historial de Movimientos</h3>
+                <div class="flex gap-2">
+                  <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Todos</option>
+                    <option>Entradas</option>
+                    <option>Salidas</option>
+                  </select>
+                </div>
+              </div>
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                  <tr>
+                    <th class="px-6 py-3 text-left">Fecha</th>
+                    <th class="px-6 py-3 text-left">Tipo</th>
+                    <th class="px-6 py-3 text-left">Producto</th>
+                    <th class="px-6 py-3 text-left">Proveedor</th>
+                    <th class="px-6 py-3 text-left">Cantidad</th>
+                    <th class="px-6 py-3 text-left">Usuario</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">21/06/2026</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Entrada</span></td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto A</td>
+                    <td class="px-6 py-3 text-gray-600">DistMax S.A.</td>
+                    <td class="px-6 py-3 text-green-600 font-medium">+50</td>
+                    <td class="px-6 py-3 text-gray-600">Juan Doe</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">21/06/2026</td>
+                    <td class="px-6 py-3"><span class="bg-red-100 text-red-500 text-xs px-2 py-0.5 rounded-full">Salida</span></td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto B</td>
+                    <td class="px-6 py-3 text-gray-600">—</td>
+                    <td class="px-6 py-3 text-red-500 font-medium">-20</td>
+                    <td class="px-6 py-3 text-gray-600">Juan Doe</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">20/06/2026</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Entrada</span></td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto D</td>
+                    <td class="px-6 py-3 text-gray-600">GlobalSupply</td>
+                    <td class="px-6 py-3 text-green-600 font-medium">+100</td>
+                    <td class="px-6 py-3 text-gray-600">Juan Doe</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">20/06/2026</td>
+                    <td class="px-6 py-3"><span class="bg-red-100 text-red-500 text-xs px-2 py-0.5 rounded-full">Salida</span></td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto C</td>
+                    <td class="px-6 py-3 text-gray-600">—</td>
+                    <td class="px-6 py-3 text-red-500 font-medium">-15</td>
+                    <td class="px-6 py-3 text-gray-600">Juan Doe</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-3 text-gray-500">19/06/2026</td>
+                    <td class="px-6 py-3"><span class="bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">Entrada</span></td>
+                    <td class="px-6 py-3 font-medium text-gray-800">Producto E</td>
+                    <td class="px-6 py-3 text-gray-600">TechParts Co.</td>
+                    <td class="px-6 py-3 text-green-600 font-medium">+75</td>
+                    <td class="px-6 py-3 text-gray-600">Juan Doe</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const sections = ['inicio', 'productos', 'proveedores', 'movimientos'];
+      const titles = {
+        inicio:       { title: 'Inicio',       subtitle: 'Resumen general del sistema',       btn: '+ Nuevo' },
+        productos:    { title: 'Productos',     subtitle: 'Gestión de inventario',             btn: '+ Nuevo producto' },
+        proveedores:  { title: 'Proveedores',   subtitle: 'Gestión de proveedores',            btn: '+ Nuevo proveedor' },
+        movimientos:  { title: 'Movimientos',   subtitle: 'Historial de entradas y salidas',   btn: '+ Registrar movimiento' },
+      };
+
+      function showSection(name) {
+        // Ocultar todas las secciones
+        sections.forEach(s => {
+          document.getElementById('section-' + s).classList.add('hidden');
+          const nav = document.getElementById('nav-' + s);
+          nav.classList.remove('bg-blue-600', 'text-white', 'font-medium');
+          nav.classList.add('text-gray-300');
+        });
+
+        // Mostrar la sección activa
+        document.getElementById('section-' + name).classList.remove('hidden');
+        const activeNav = document.getElementById('nav-' + name);
+        activeNav.classList.add('bg-blue-600', 'text-white', 'font-medium');
+        activeNav.classList.remove('text-gray-300');
+
+        // Actualizar header
+        document.getElementById('page-title').textContent = titles[name].title;
+        document.getElementById('page-subtitle').textContent = titles[name].subtitle;
+        document.getElementById('btn-nuevo').textContent = titles[name].btn;
+      }
+    </script>
+
+  </body>
+</html>
