@@ -241,7 +241,7 @@
                 <option>Audio</option>
                 <option>Mobiliario</option>
               </select>
-              <button type="button"
+              <button type="button" onclick="abrirModalSecundario('categoria')"
                 class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
                 +
               </button>
@@ -261,7 +261,7 @@
                 <option>Wacom</option>
                 <option>Herman Miller</option>
               </select>
-              <button type="button"
+              <button type="button" onclick="abrirModalSecundario('marca')"
                 class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
                 +
               </button>
@@ -278,7 +278,7 @@
                 <option>Bodega B</option>
                 <option>Sala C</option>
               </select>
-              <button type="button"
+              <button type="button" onclick="abrirModalSecundario('zona')"
                 class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
                 +
               </button>
@@ -292,6 +292,44 @@
           </button>
 
         </form>
+      </div>
+    </div>
+
+    <!-- ── MODAL SECUNDARIO (Categoría / Marca / Zona) ── -->
+    <div id="modal-secundario" style="display:none" class="fixed inset-0 z-[60] flex items-center justify-center">
+
+      <!-- Backdrop -->
+      <div onclick="cerrarModalSecundario()" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+      <!-- Contenido -->
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-7 z-10">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h3 id="modal-sec-titulo" class="text-base font-bold text-gray-800">Registro</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Ingresa el nombre para registrar</p>
+          </div>
+          <button onclick="cerrarModalSecundario()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Formulario -->
+        <div class="space-y-4">
+          <div>
+            <label id="modal-sec-label" class="block text-xs font-medium text-gray-600 mb-1">Nombre</label>
+            <input id="modal-sec-input" type="text" placeholder=""
+              class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+          </div>
+          <button onclick="confirmarModalSecundario()"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2.5 rounded-lg transition">
+            Registrar
+          </button>
+        </div>
+
       </div>
     </div>
 
