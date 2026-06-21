@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productos</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-gray-100 h-screen overflow-hidden">
+
+    <div class="grid grid-cols-[260px_1fr] h-screen">
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="bg-gray-900 text-white flex flex-col">
+
+        <!-- Logo -->
+        <div class="px-6 py-5 border-b border-gray-700">
+          <h1 class="text-xl font-bold tracking-wide text-white">⚡ MyDashboard</h1>
+        </div>
+
+        <!-- Nav links -->
+        <nav class="flex-1 px-4 py-6 space-y-1">
+          <a href="index.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition">
+            <span>🏠</span> Inicio
+          </a>
+          <a href="productos.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium">
+            <span>📦</span> Productos
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition">
+            <span>🏭</span> Proveedores
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition">
+            <span>🔄</span> Movimientos
+          </a>
+        </nav>
+
+        <!-- User footer -->
+        <div class="px-6 py-4 border-t border-gray-700 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">JD</div>
+          <div>
+            <p class="text-sm font-medium text-white">Juan Doe</p>
+            <p class="text-xs text-gray-400">Admin</p>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ── MAIN CONTENT ── -->
+      <main class="flex flex-col overflow-hidden">
+
+        <!-- Top bar -->
+        <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-gray-800">Productos</h2>
+            <p class="text-sm text-gray-400">Gestión y visualización del inventario de productos</p>
+          </div>
+        </header>
+
+        <!-- Content area -->
+        <div class="flex-1 overflow-y-auto p-8">
+
+          <!-- Barra superior: búsqueda + botón -->
+          <div class="flex items-center gap-4 mb-6">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Buscar producto por nombre, categoría o marca..."
+              class="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+            />
+            <button
+              id="btn-registrar"
+              class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap">
+              + Registrar nuevo producto
+            </button>
+          </div>
+
+          <!-- Tabla de productos -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full text-sm" id="tabla-productos">
+              <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b border-gray-100">
+                <tr>
+                  <th class="px-5 py-3 text-left">ID</th>
+                  <th class="px-5 py-3 text-left">Nombre</th>
+                  <th class="px-5 py-3 text-left">Precio</th>
+                  <th class="px-5 py-3 text-left">Stock</th>
+                  <th class="px-5 py-3 text-left">Categoría</th>
+                  <th class="px-5 py-3 text-left">Marca</th>
+                  <th class="px-5 py-3 text-left">Zona</th>
+                </tr>
+              </thead>
+              <tbody id="tbody" class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#001</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Laptop ProMax 15</td>
+                  <td class="px-5 py-3 text-gray-600">$1,299.00</td>
+                  <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">120</span></td>
+                  <td class="px-5 py-3 text-gray-600">Electrónica</td>
+                  <td class="px-5 py-3 text-gray-600">Dell</td>
+                  <td class="px-5 py-3 text-gray-600">Bodega A</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#002</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Teclado Mecánico X</td>
+                  <td class="px-5 py-3 text-gray-600">$89.99</td>
+                  <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">85</span></td>
+                  <td class="px-5 py-3 text-gray-600">Periféricos</td>
+                  <td class="px-5 py-3 text-gray-600">Logitech</td>
+                  <td class="px-5 py-3 text-gray-600">Bodega B</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#003</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Monitor UltraWide 29"</td>
+                  <td class="px-5 py-3 text-gray-600">$430.00</td>
+                  <td class="px-5 py-3"><span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-full">9</span></td>
+                  <td class="px-5 py-3 text-gray-600">Electrónica</td>
+                  <td class="px-5 py-3 text-gray-600">LG</td>
+                  <td class="px-5 py-3 text-gray-600">Bodega A</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#004</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Silla Ergonómica Pro</td>
+                  <td class="px-5 py-3 text-gray-600">$320.00</td>
+                  <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">42</span></td>
+                  <td class="px-5 py-3 text-gray-600">Mobiliario</td>
+                  <td class="px-5 py-3 text-gray-600">Herman Miller</td>
+                  <td class="px-5 py-3 text-gray-600">Sala C</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#005</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Mouse Inalámbrico S3</td>
+                  <td class="px-5 py-3 text-gray-600">$45.00</td>
+                  <td class="px-5 py-3"><span class="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full">3</span></td>
+                  <td class="px-5 py-3 text-gray-600">Periféricos</td>
+                  <td class="px-5 py-3 text-gray-600">Logitech</td>
+                  <td class="px-5 py-3 text-gray-600">Bodega B</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#006</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Auriculares Noise Cancel</td>
+                  <td class="px-5 py-3 text-gray-600">$199.00</td>
+                  <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">60</span></td>
+                  <td class="px-5 py-3 text-gray-600">Audio</td>
+                  <td class="px-5 py-3 text-gray-600">Sony</td>
+                  <td class="px-5 py-3 text-gray-600">Bodega A</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#007</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Webcam HD 1080p</td>
+                  <td class="px-5 py-3 text-gray-600">$75.00</td>
+                  <td class="px-5 py-3"><span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">0</span></td>
+                  <td class="px-5 py-3 text-gray-600">Periféricos</td>
+                  <td class="px-5 py-3 text-gray-600">Logitech</td>
+                  <td class="px-5 py-3 text-gray-600">Bodega B</td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-5 py-3 text-gray-400 font-mono">#008</td>
+                  <td class="px-5 py-3 font-medium text-gray-800">Tablet GrafPad 10</td>
+                  <td class="px-5 py-3 text-gray-600">$550.00</td>
+                  <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">28</span></td>
+                  <td class="px-5 py-3 text-gray-600">Electrónica</td>
+                  <td class="px-5 py-3 text-gray-600">Wacom</td>
+                  <td class="px-5 py-3 text-gray-600">Sala C</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Sin resultados -->
+            <div id="sin-resultados" class="hidden py-16 text-center text-gray-400">
+              <p class="text-4xl mb-3">🔍</p>
+              <p class="text-sm">No se encontraron productos con ese criterio.</p>
+            </div>
+
+            <!-- Footer de tabla -->
+            <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+              <span id="contador">Mostrando <strong class="text-gray-600">8</strong> productos</span>
+              <span>Sistema de Control de Inventario</span>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const input = document.getElementById('search-input');
+      const filas = document.querySelectorAll('#tbody tr');
+      const sinResultados = document.getElementById('sin-resultados');
+      const contador = document.getElementById('contador');
+
+      input.addEventListener('input', () => {
+        const query = input.value.toLowerCase().trim();
+        let visibles = 0;
+
+        filas.forEach(fila => {
+          const texto = fila.textContent.toLowerCase();
+          const coincide = texto.includes(query);
+          fila.classList.toggle('hidden', !coincide);
+          if (coincide) visibles++;
+        });
+
+        sinResultados.classList.toggle('hidden', visibles > 0);
+        contador.innerHTML = `Mostrando <strong class="text-gray-600">${visibles}</strong> producto${visibles !== 1 ? 's' : ''}`;
+      });
+    </script>
+
+  </body>
+</html>
