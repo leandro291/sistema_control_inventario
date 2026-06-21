@@ -71,7 +71,7 @@
               class="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
             />
             <button
-              id="btn-registrar"
+              onclick="document.getElementById('modal').style.display='flex'"
               class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap">
               + Registrar nuevo producto
             </button>
@@ -185,10 +185,10 @@
     </div>
 
     <!-- ── MODAL REGISTRAR PRODUCTO ── -->
-    <div id="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div id="modal" style="display:none" class="fixed inset-0 z-50 flex items-center justify-center">
 
       <!-- Backdrop con blur -->
-      <div id="modal-backdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div onclick="document.getElementById('modal').style.display='none'" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
       <!-- Contenido del modal -->
       <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-7 z-10">
@@ -199,7 +199,7 @@
             <h3 class="text-lg font-bold text-gray-800">Registrar nuevo producto</h3>
             <p class="text-xs text-gray-400 mt-0.5">Completa los campos del formulario</p>
           </div>
-          <button id="btn-cerrar-modal" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+          <button onclick="document.getElementById('modal').style.display='none'" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -241,16 +241,10 @@
                 <option>Audio</option>
                 <option>Mobiliario</option>
               </select>
-              <button type="button" onclick="mostrarAgregar('categoria')"
+              <button type="button"
                 class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
                 +
               </button>
-            </div>
-            <div id="nueva-categoria" class="hidden mt-2 flex gap-2">
-              <input type="text" id="input-nueva-categoria" placeholder="Nueva categoría..."
-                class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
-              <button type="button" onclick="confirmarAgregar('categoria')"
-                class="px-3 py-2 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition">Añadir</button>
             </div>
           </div>
 
@@ -267,16 +261,10 @@
                 <option>Wacom</option>
                 <option>Herman Miller</option>
               </select>
-              <button type="button" onclick="mostrarAgregar('marca')"
+              <button type="button"
                 class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
                 +
               </button>
-            </div>
-            <div id="nueva-marca" class="hidden mt-2 flex gap-2">
-              <input type="text" id="input-nueva-marca" placeholder="Nueva marca..."
-                class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
-              <button type="button" onclick="confirmarAgregar('marca')"
-                class="px-3 py-2 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition">Añadir</button>
             </div>
           </div>
 
@@ -290,16 +278,10 @@
                 <option>Bodega B</option>
                 <option>Sala C</option>
               </select>
-              <button type="button" onclick="mostrarAgregar('zona')"
+              <button type="button"
                 class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
                 +
               </button>
-            </div>
-            <div id="nueva-zona" class="hidden mt-2 flex gap-2">
-              <input type="text" id="input-nueva-zona" placeholder="Nueva zona..."
-                class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
-              <button type="button" onclick="confirmarAgregar('zona')"
-                class="px-3 py-2 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition">Añadir</button>
             </div>
           </div>
 
