@@ -1,0 +1,294 @@
+<?php
+$page_title = 'Productos';
+$current_page = 'productos';
+require_once '../config/database.php';
+
+$db = new Database();
+$conn = $db->conn;
+
+require_once '../functions/productos_db.php';
+
+// Atrapamos cualquier POST (guardar producto, categoría, etc.)
+manejarAcciones($conn);
+
+// Asumimos que $conn ya se define en productos.php
+$productos = obtenerProductos($conn ?? null);
+$categorias = obtenerCategorias($conn ?? null);
+$marcas = obtenerMarcas($conn ?? null);
+$zonas = obtenerZonas($conn ?? null);
+
+require '../includes/head.php';
+require '../includes/sidebar.php';
+?>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="flex flex-col overflow-hidden">
+
+      <!-- Top bar -->
+      <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">Productos</h2>
+          <p class="text-sm text-gray-400">Gestión y visualización del inventario de productos</p>
+        </div>
+      </header>
+
+      <!-- Content area -->
+      <div class="flex-1 overflow-y-auto p-8">
+
+        <!-- Título sección -->
+        <h2 class="text-base font-semibold text-gray-700 mb-3">Lista de Productos</h2>
+
+        <!-- Barra superior: búsqueda + botón -->
+        <div class="flex items-center gap-4 mb-6">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Buscar producto por nombre, categoría o marca..."
+            class="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+          />
+          <button
+            onclick="document.getElementById('modal').style.display='flex'"
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap">
+            + Registrar nuevo producto
+          </button>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <table class="w-full text-sm" id="tabla-productos">
+            <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b border-gray-100">
+              <tr>
+                <th class="px-5 py-3 text-left">ID</th>
+                <th class="px-5 py-3 text-left">Nombre</th>
+                <th class="px-5 py-3 text-left">Precio</th>
+                <th class="px-5 py-3 text-left">Stock</th>
+                <th class="px-5 py-3 text-left">Categoría</th>
+                <th class="px-5 py-3 text-left">Marca</th>
+                <th class="px-5 py-3 text-left">Zona</th>
+              </tr>
+            </thead>
+            <tbody id="tbody" class="divide-y divide-gray-100">
+            </tbody>
+          </table>
+
+          <!-- Sin resultados -->
+          <div id="sin-resultados" class="hidden py-16 text-center text-gray-400">
+            <p class="text-4xl mb-3">🔍</p>
+            <p class="text-sm">No se encontraron productos con ese criterio.</p>
+          </div>
+
+          <!-- Footer de tabla -->
+          <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+            <span id="contador">Mostrando <strong class="text-gray-600">0</strong> productos</span>
+            <span>Sistema de Control de Inventario</span>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ── MODAL REGISTRAR PRODUCTO ── -->
+    <div id="modal" style="display:none" class="fixed inset-0 z-50 flex items-center justify-center">
+
+      <!-- Backdrop con blur -->
+      <div onclick="document.getElementById('modal').style.display='none'" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+      <!-- Contenido del modal -->
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-7 z-10">
+
+        <!-- Header modal -->
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">Registrar nuevo producto</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Completa los campos del formulario</p>
+          </div>
+          <button onclick="document.getElementById('modal').style.display='none'" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Formulario -->
+        <form method="POST" action="productos.php" id="form-producto" class="space-y-4">
+          <input type="hidden" name="action" value="registrar_producto" />
+
+          <!-- Nombre -->
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Nombre del producto</label>
+            <input name="nombre_producto" type="text" placeholder="Ej. Laptop ProMax 15" required
+              class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+          </div>
+
+          <!-- Precio y Stock en fila -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Precio ($)</label>
+              <input name="precio_producto" type="number" min="0" step="0.01" placeholder="0.00" required
+                class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Stock</label>
+              <input name="stock_producto" type="number" min="0" placeholder="0" required
+                class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+            </div>
+          </div>
+
+          <!-- Categoría -->
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Categoría</label>
+            <div class="flex gap-2">
+              <select name="categoria_producto" required class="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition bg-white">
+                <option value="">Seleccionar...</option>
+                <?php foreach($categorias as $cat): ?>
+                  <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option>
+                <?php endforeach; ?>
+              </select>
+              <button type="button" onclick="document.getElementById('modal-categoria').style.display='flex'"
+                class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Marca -->
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Marca</label>
+            <div class="flex gap-2">
+              <select name="marca_producto" required class="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition bg-white">
+                <option value="">Seleccionar...</option>
+                <?php foreach($marcas as $marca): ?>
+                  <option value="<?= $marca['id'] ?>"><?= htmlspecialchars($marca['nombre']) ?></option>
+                <?php endforeach; ?>
+              </select>
+              <button type="button" onclick="document.getElementById('modal-marca').style.display='flex'"
+                class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Zona -->
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Zona</label>
+            <div class="flex gap-2">
+              <select name="zona_producto" required class="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition bg-white">
+                <option value="">Seleccionar...</option>
+                <?php foreach($zonas as $zona): ?>
+                  <option value="<?= $zona['id'] ?>"><?= htmlspecialchars($zona['nombre']) ?></option>
+                <?php endforeach; ?>
+              </select>
+              <button type="button" onclick="document.getElementById('modal-zona').style.display='flex'"
+                class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 font-bold text-lg transition">
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Botón registrar -->
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2.5 rounded-lg transition mt-2">
+            Registrar producto
+          </button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- ── MODAL CATEGORÍA ── -->
+    <div id="modal-categoria" style="display:none" class="fixed inset-0 z-[60] flex items-center justify-center">
+      <div onclick="document.getElementById('modal-categoria').style.display='none'" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-7 z-10">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h3 class="text-base font-bold text-gray-800">Registro de Categoría</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Ingresa el nombre para registrar</p>
+          </div>
+          <button onclick="document.getElementById('modal-categoria').style.display='none'" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form method="POST" action="productos.php" class="space-y-4">
+          <input type="hidden" name="action" value="registrar_categoria" />
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Nombre de la categoría</label>
+            <input name="nombre_categoria" type="text" placeholder="Ej. Electrónica" required
+              class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+          </div>
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2.5 rounded-lg transition">
+            Registrar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── MODAL MARCA ── -->
+    <div id="modal-marca" style="display:none" class="fixed inset-0 z-[60] flex items-center justify-center">
+      <div onclick="document.getElementById('modal-marca').style.display='none'" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-7 z-10">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h3 class="text-base font-bold text-gray-800">Registro de Marca</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Ingresa el nombre para registrar</p>
+          </div>
+          <button onclick="document.getElementById('modal-marca').style.display='none'" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form method="POST" action="productos.php" class="space-y-4">
+          <input type="hidden" name="action" value="registrar_marca" />
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Nombre de la marca</label>
+            <input name="nombre_marca" type="text" placeholder="Ej. Samsung" required
+              class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+          </div>
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2.5 rounded-lg transition">
+            Registrar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── MODAL ZONA ── -->
+    <div id="modal-zona" style="display:none" class="fixed inset-0 z-[60] flex items-center justify-center">
+      <div onclick="document.getElementById('modal-zona').style.display='none'" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-7 z-10">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <h3 class="text-base font-bold text-gray-800">Registro de Zona</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Ingresa el nombre para registrar</p>
+          </div>
+          <button onclick="document.getElementById('modal-zona').style.display='none'" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form method="POST" action="productos.php" class="space-y-4">
+          <input type="hidden" name="action" value="registrar_zona" />
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Nombre de la zona</label>
+            <input name="nombre_zona" type="text" placeholder="Ej. Bodega C"
+              class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+          </div>
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2.5 rounded-lg transition">
+            Registrar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const productos = <?php echo json_encode($productos); ?>;
+    </script>
+    <script src="../js/productos/tabla.js"></script>
+    <script src="../js/productos/busqueda.js"></script>
+  </body>
+</html>
