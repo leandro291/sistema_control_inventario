@@ -46,14 +46,14 @@ function editarProveedor(mysqli $conn) {
 function eliminarProveedor(mysqli $conn) {
     $id = $_POST['id_proveedor'];
     
-    $stmt = $conn->prepare("DELETE FROM proveedores WHERE id=?");
+    $stmt = $conn->prepare("UPDATE proveedores SET estado = 0 WHERE id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
 }
 
 function obtenerProveedores(mysqli $conn) {
-    $sql = "SELECT id, ruc_dni, nombre, correo FROM proveedores";
+    $sql = "SELECT id, ruc_dni, nombre, correo FROM proveedores WHERE estado = 1";
     $result = mysqli_query($conn, $sql);
     return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
 }
