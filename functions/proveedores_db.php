@@ -8,6 +8,12 @@ function manejarAcciones(mysqli $conn) {
         if ($accion == "registrar_proveedor"){
             registrarProveedor($conn);
         }
+        elseif ($accion == "editar_proveedor"){
+            editarProveedor($conn);
+        }
+        elseif ($accion == "eliminar_proveedor"){
+            eliminarProveedor($conn);
+        }
 
         header("Location: proveedores.php");
         exit;
@@ -19,8 +25,31 @@ function registrarProveedor(mysqli $conn) {
     $nombre = $_POST['nombre'];
     $correo = $_POST['correo'];
 
-    $consulta = "INSERT INTO proveedores (ruc_dni, nombre, correo) VALUES ('$ruc', '$nombre', '$correo')";
-    mysqli_query($conn, $consulta);
+    $stmt = $conn->prepare("INSERT INTO proveedores (ruc_dni, nombre, correo) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $ruc, $nombre, $correo);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function editarProveedor(mysqli $conn) {
+    $id = $_POST['id_proveedor'];
+    $ruc = $_POST['ruc'];
+    $nombre = $_POST['nombre'];
+    $correo = $_POST['correo'];
+
+    $stmt = $conn->prepare("UPDATE proveedores SET ruc_dni=?, nombre=?, correo=? WHERE id=?");
+    $stmt->bind_param("sssi", $ruc, $nombre, $correo, $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function eliminarProveedor(mysqli $conn) {
+    $id = $_POST['id_proveedor'];
+    
+    $stmt = $conn->prepare("DELETE FROM proveedores WHERE id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
 }
 
 function obtenerProveedores(mysqli $conn) {
