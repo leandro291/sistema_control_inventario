@@ -3,16 +3,16 @@
 
 const tbody = document.getElementById('tbody');
 
-const renderTabla = (datos) => {
+const renderTabla = (proveedores) => {
   tbody.innerHTML = '';
 
-  datos.forEach(proveedor => {
+  proveedores.forEach(proveedor => {
     const tr = document.createElement('tr');
     tr.classList.add('hover:bg-gray-50', 'transition');
 
     tr.innerHTML = `
       <td class="px-5 py-3 text-gray-400 font-mono">${proveedor.id}</td>
-      <td class="px-5 py-3 text-gray-600">${proveedor.ruc}</td>
+      <td class="px-5 py-3 text-gray-600">${proveedor.ruc_dni}</td>
       <td class="px-5 py-3 font-medium text-gray-800">${proveedor.nombre}</td>
       <td class="px-5 py-3 text-gray-600">${proveedor.correo}</td>
     `;
