@@ -29,6 +29,10 @@ const renderTabla = (productos) => {
       <td class="px-5 py-3 text-gray-600">${producto.categoria}</td>
       <td class="px-5 py-3 text-gray-600">${producto.marca}</td>
       <td class="px-5 py-3 text-gray-600">${producto.zona}</td>
+      <td class="px-5 py-3 text-center">
+        <button onclick='abrirModalEditarProducto(${JSON.stringify(producto)})' class="text-blue-500 hover:text-blue-700 mr-2" title="Editar">✏️</button>
+        <button onclick="confirmarEliminarProducto(${producto.id})" class="text-red-500 hover:text-red-700" title="Eliminar">🗑️</button>
+      </td>
     `;
 
       tbody.appendChild(tr);
@@ -37,3 +41,28 @@ const renderTabla = (productos) => {
 
 // Renderizar al cargar la página
 renderTabla(productos);
+
+function abrirModalEditarProducto(prod) {
+  document.getElementById('edit_id_producto').value = prod.id;
+  document.getElementById('edit_nombre_producto').value = prod.nombre;
+  document.getElementById('edit_precio_producto').value = prod.precio;
+  document.getElementById('edit_stock_producto').value = prod.stock;
+  
+  const selectCategoria = document.getElementById('edit_categoria_producto');
+  Array.from(selectCategoria.options).forEach(opt => { if(opt.text === prod.categoria) selectCategoria.value = opt.value; });
+  
+  const selectMarca = document.getElementById('edit_marca_producto');
+  Array.from(selectMarca.options).forEach(opt => { if(opt.text === prod.marca) selectMarca.value = opt.value; });
+
+  const selectZona = document.getElementById('edit_zona_producto');
+  Array.from(selectZona.options).forEach(opt => { if(opt.text === prod.zona) selectZona.value = opt.value; });
+
+  document.getElementById('modal-editar').style.display = 'flex';
+}
+
+function confirmarEliminarProducto(id) {
+  if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+    document.getElementById('delete_id_producto').value = id;
+    document.getElementById('form-eliminar-producto').submit();
+  }
+}

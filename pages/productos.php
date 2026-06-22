@@ -65,6 +65,7 @@ require '../includes/sidebar.php';
                 <th class="px-5 py-3 text-left">Categoría</th>
                 <th class="px-5 py-3 text-left">Marca</th>
                 <th class="px-5 py-3 text-left">Zona</th>
+                <th class="px-5 py-3 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody id="tbody" class="divide-y divide-gray-100">
@@ -194,6 +195,84 @@ require '../includes/sidebar.php';
         </form>
       </div>
     </div>
+
+    <!-- ── MODAL EDITAR PRODUCTO ── -->
+    <div id="modal-editar" style="display:none" class="fixed inset-0 z-50 flex items-center justify-center">
+      <div onclick="document.getElementById('modal-editar').style.display='none'" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-7 z-10">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">Editar producto</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Modifica los campos necesarios</p>
+          </div>
+          <button onclick="document.getElementById('modal-editar').style.display='none'" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form method="POST" action="productos.php" id="form-editar-producto" class="space-y-4">
+          <input type="hidden" name="action" value="editar_producto" />
+          <input type="hidden" name="id_producto" id="edit_id_producto" />
+
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Nombre del producto</label>
+            <input name="nombre_producto" id="edit_nombre_producto" type="text" required class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Precio ($)</label>
+              <input name="precio_producto" id="edit_precio_producto" type="number" min="0" step="0.01" required class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Stock</label>
+              <input name="stock_producto" id="edit_stock_producto" type="number" min="0" required class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Categoría</label>
+            <select name="categoria_producto" id="edit_categoria_producto" required class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition bg-white">
+              <option value="">Seleccionar...</option>
+              <?php foreach($categorias as $cat): ?>
+                <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['nombre']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Marca</label>
+            <select name="marca_producto" id="edit_marca_producto" required class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition bg-white">
+              <option value="">Seleccionar...</option>
+              <?php foreach($marcas as $marca): ?>
+                <option value="<?= $marca['id'] ?>"><?= htmlspecialchars($marca['nombre']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Zona</label>
+            <select name="zona_producto" id="edit_zona_producto" required class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition bg-white">
+              <option value="">Seleccionar...</option>
+              <?php foreach($zonas as $zona): ?>
+                <option value="<?= $zona['id'] ?>"><?= htmlspecialchars($zona['nombre']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2.5 rounded-lg transition mt-2">
+            Guardar cambios
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── FORMULARIO ELIMINAR OCULTO ── -->
+    <form method="POST" action="productos.php" id="form-eliminar-producto" style="display:none;">
+      <input type="hidden" name="action" value="eliminar_producto" />
+      <input type="hidden" name="id_producto" id="delete_id_producto" />
+    </form>
 
     <!-- ── MODAL CATEGORÍA ── -->
     <div id="modal-categoria" style="display:none" class="fixed inset-0 z-[60] flex items-center justify-center">

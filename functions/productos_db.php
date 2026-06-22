@@ -18,6 +18,12 @@ function manejarAcciones(mysqli $conn) {
         elseif ($accion == "registrar_zona"){
             registrarZona($conn);
         }
+        elseif ($accion == "editar_producto"){
+            editarProducto($conn);
+        }
+        elseif ($accion == "eliminar_producto"){
+            eliminarProducto($conn);
+        }
 
         header("Location: productos.php");
         exit;
@@ -44,17 +50,41 @@ function registrarZona(mysqli $conn){
 }
 
 function registrarProducto(mysqli $conn){
-    $nombre_producto = $_POST['nombre_producto'];
-    $precio_producto = $_POST['precio_producto'];
-    $stock_producto = $_POST['stock_producto'];
-    $categoria_producto = $_POST['categoria_producto'];
-    $marca_producto = $_POST['marca_producto'];
-    $zona_producto = $_POST['zona_producto'];
+    $nombre = $_POST['nombre_producto'];
+    $precio = $_POST['precio_producto'];
+    $stock = $_POST['stock_producto'];
+    $cat = $_POST['categoria_producto'];
+    $marca = $_POST['marca_producto'];
+    $zona = $_POST['zona_producto'];
 
-    $consulta = "INSERT INTO productos (nombre, precio, stock, categoria_id, marca_id, zona_id) 
-                VALUES ('$nombre_producto', '$precio_producto', '$stock_producto', '$categoria_producto', '$marca_producto', '$zona_producto')";
-    mysqli_query($conn, $consulta);
+    $stmt = $conn->prepare("INSERT INTO productos (nombre, precio, stock, categoria_id, marca_id, zona_id) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdiiii", $nombre, $precio, $stock, $cat, $marca, $zona);
+    $stmt->execute();
+    $stmt->close();
 }   
+
+function editarProducto(mysqli $conn){
+    $id = $_POST['id_producto'];
+    $nombre = $_POST['nombre_producto'];
+    $precio = $_POST['precio_producto'];
+    $stock = $_POST['stock_producto'];
+    $cat = $_POST['categoria_producto'];
+    $marca = $_POST['marca_producto'];
+    $zona = $_POST['zona_producto'];
+
+    $stmt = $conn->prepare("UPDATE productos SET nombre=?, precio=?, stock=?, categoria_id=?, marca_id=?, zona_id=? WHERE id=?");
+    $stmt->bind_param("sdiiiii", $nombre, $precio, $stock, $cat, $marca, $zona, $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function eliminarProducto(mysqli $conn){
+    $id = $_POST['id_producto'];
+    $stmt = $conn->prepare("DELETE FROM productos WHERE id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+}
 
 function obtenerCategorias(mysqli $conn) {
     $sql = "SELECT id, nombre FROM categorias";
