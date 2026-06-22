@@ -80,7 +80,7 @@ function editarProducto(mysqli $conn){
 
 function eliminarProducto(mysqli $conn){
     $id = $_POST['id_producto'];
-    $stmt = $conn->prepare("DELETE FROM productos WHERE id=?");
+    $stmt = $conn->prepare("UPDATE productos SET estado = 0 WHERE id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
@@ -116,7 +116,8 @@ function obtenerProductos(mysqli $conn) {
             FROM productos p
             JOIN categorias cat ON cat.id = p.categoria_id
             JOIN marcas m ON m.id = p.marca_id
-            JOIN zonas_almacen z ON z.id = p.zona_id";
+            JOIN zonas_almacen z ON z.id = p.zona_id
+            WHERE p.estado = 1";
     $result = mysqli_query($conn, $sql);
     return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
 }
