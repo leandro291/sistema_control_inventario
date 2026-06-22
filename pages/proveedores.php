@@ -1,4 +1,5 @@
 <?php
+require_once '../includes/auth_check.php';
 $page_title = 'Proveedores';
 $current_page = 'proveedores';
 require_once '../config/database.php';
@@ -67,7 +68,7 @@ require '../includes/sidebar.php';
 
           <!-- Sin resultados -->
           <div id="sin-resultados" class="hidden py-16 text-center text-gray-400">
-            <p class="text-4xl mb-3">🔍</p>
+            <svg class="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             <p class="text-sm">No se encontraron proveedores con ese criterio.</p>
           </div>
 
