@@ -51,13 +51,13 @@ function obtenerMovimientos(mysqli $conn) {
 }
 
 function obtenerListaProductos(mysqli $conn) {
-    $sql = "SELECT id, nombre, stock FROM productos ORDER BY nombre ASC";
+    $sql = "SELECT id, nombre, stock FROM productos WHERE estado = 1 ORDER BY nombre ASC";
     $result = mysqli_query($conn, $sql);
     return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
 }
 
 function obtenerListaProveedores(mysqli $conn) {
-    $sql = "SELECT id, nombre FROM proveedores ORDER BY nombre ASC";
+    $sql = "SELECT id, nombre FROM proveedores WHERE estado = 1 ORDER BY nombre ASC";
     $result = mysqli_query($conn, $sql);
     return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : [];
 }
