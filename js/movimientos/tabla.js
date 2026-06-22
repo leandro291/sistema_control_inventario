@@ -16,15 +16,19 @@ const renderTabla = (datos) => {
     const tr = document.createElement('tr');
     tr.classList.add('hover:bg-gray-50', 'transition');
 
+    // Headers en movimientos.php: ID, Producto, Cantidad, Tipo, Proveedor, Fecha, Motivo
     tr.innerHTML = `
       <td class="px-5 py-3 text-gray-400 font-mono">${movimiento.id}</td>
-      <td class="px-5 py-3 text-gray-600">${movimiento.fecha}</td>
+      <td class="px-5 py-3 font-medium text-gray-800">${movimiento.producto}</td>
+      <td class="px-5 py-3 text-gray-700">${movimiento.cantidad}</td>
       <td class="px-5 py-3">
         <span class="${getBadgeTipo(movimiento.tipo)} text-xs px-2 py-0.5 rounded-full">
           ${movimiento.tipo}
         </span>
       </td>
-      <td class="px-5 py-3 font-medium text-gray-800">${movimiento.proveedor}</td>
+      <td class="px-5 py-3 text-gray-600">${movimiento.proveedor}</td>
+      <td class="px-5 py-3 text-gray-600">${movimiento.fecha}</td>
+      <td class="px-5 py-3 text-gray-500 italic max-w-xs truncate" title="${movimiento.motivo}">${movimiento.motivo}</td>
     `;
 
     tbody.appendChild(tr);
