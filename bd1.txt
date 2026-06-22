@@ -1,0 +1,120 @@
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE marcas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE zonas_almacen (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+-- =========================================================
+-- 2. TABLAS PRINCIPALES (MAESTROS)
+-- =========================================================
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE proveedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ruc_dni VARCHAR(15) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(100)
+);
+
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL CHECK (stock >= 0),
+    categoria_id INT,
+    marca_id INT,
+    zona_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+    FOREIGN KEY (marca_id) REFERENCES marcas(id),
+    FOREIGN KEY (zona_id) REFERENCES zonas_almacen(id)
+);
+
+-- =========================================================
+-- 3. TABLAS TRANSACCIONALES (Ajustadas para MySQL)
+-- =========================================================
+CREATE TABLE movimientos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(20) NOT NULL CHECK (tipo IN ('INGRESO', 'SALIDA')),
+    motivo VARCHAR(200) NULL,
+    proveedor_id INT,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
+);
+
+CREATE TABLE detalles_movimiento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    movimiento_id INT,
+    producto_id INT,
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    FOREIGN KEY (movimiento_id) REFERENCES movimientos(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+
+-- =========================================================
+-- 4. TABLA DE AUDITORÍA (Ajustada para MySQL)
+-- =========================================================
+CREATE TABLE auditoria_stock (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT,
+    stock_antiguo INT,
+    stock_nuevo INT,
+    tipo_operacion VARCHAR(50) NOT NULL, 
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+-- =========================================================
+                          TRIGGER
+-- =========================================================
+DELIMITER //
+
+CREATE TRIGGER trg_actualizar_stock_auditoria
+AFTER INSERT ON detalles_movimiento
+FOR EACH ROW
+BEGIN
+    -- Declaramos variables
+    DECLARE v_tipo VARCHAR(20);
+    DECLARE v_stock_actual INT;
+    DECLARE v_nuevo_stock INT;
+
+    -- 1. Obtenemos el tipo de movimiento (INGRESO o SALIDA) desde la cabecera
+    SELECT tipo INTO v_tipo 
+    FROM movimientos 
+    WHERE id = NEW.movimiento_id;
+
+    -- 2. Obtenemos el stock actual del producto afectado
+    SELECT stock INTO v_stock_actual 
+    FROM productos 
+    WHERE id = NEW.producto_id;
+
+    -- 3. Calculamos el nuevo stock basándonos en la operación
+    IF v_tipo = 'INGRESO' THEN
+        SET v_nuevo_stock = v_stock_actual + NEW.cantidad;
+    ELSEIF v_tipo = 'SALIDA' THEN
+        SET v_nuevo_stock = v_stock_actual - NEW.cantidad;
+    END IF;
+
+    -- 4. Actualizamos el stock en la tabla principal
+    UPDATE productos 
+    SET stock = v_nuevo_stock 
+    WHERE id = NEW.producto_id;
+
+    -- 5. Insertamos la evidencia en la tabla de auditoría
+    INSERT INTO auditoria_stock (producto_id, stock_antiguo, stock_nuevo, tipo_operacion)
+    VALUES (NEW.producto_id, v_stock_actual, v_nuevo_stock, CONCAT(v_tipo, ' POR MOVIMIENTO'));
+
+END //
+
+DELIMITER ;
