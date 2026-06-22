@@ -34,7 +34,7 @@ function registrarMovimiento(mysqli $conn) {
 
 function obtenerMovimientos(mysqli $conn) {
     $sql = "SELECT 
-                CONCAT('#', LPAD(m.id, 3, '0')) as id,
+                m.id,
                 DATE_FORMAT(m.fecha, '%d/%m/%Y') AS fecha,
                 CASE WHEN m.tipo = 'INGRESO' THEN 'Entrada' ELSE 'Salida' END AS tipo,
                 IFNULL(pr.nombre, '—') AS proveedor,
